@@ -1,0 +1,193 @@
+/* ----------------- Custom Styles ----------------- */
+/* ----------------- D. Bailey ----------------- */
+
+
+img {
+    border: 0;
+    width: 300px;
+    height: 300px;
+}
+
+<style>
+  .custom-icon {
+    position: relative;
+  }
+
+  .circle-marker {
+    width: 23px; /* Adjust the size as needed */
+    height: 23px; /* Adjust the size as needed */
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .circle-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+  }
+</style>
+
+.popup-image {
+    width: 5px,
+    height: 5px,
+    max-width: 5px; /* Adjust the maximum width as needed */
+    max-height: 5px; /* Adjust the maximum height as needed */
+    display: block; /* Ensures proper spacing and centering of the image */
+    margin: 0 auto; /* Centers the image horizontally */
+}
+
+
+strong {
+	
+	font-family: 'Ubuntu', sans-serif;
+	color: 	#FFFFFF;
+	
+}
+
+.control-label strong {
+	
+	font-family: 'Ubuntu', sans-serif;
+	color: 	#000000;
+	
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: 	#FFFFFF;
+	
+}
+
+li {
+	
+	font-family: 'Ubuntu', sans-serif;
+}
+
+h5 {
+	
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+h4 {
+	
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+
+strong .aCustomC {
+	
+	font-family: 'Ubuntu', sans-serif;
+	color: 	#000000;
+	
+}
+
+span *{
+	
+	
+	font: 20px;
+}
+
+.navbar {
+	
+	border-radius: 0px;
+	border-width: 0px;
+	border-color: #303030;
+	background: rgba(0, 0, 0, 1);
+}
+
+#myMap {
+	
+
+	border-color: #CCCCCC;
+	border-style: solid;
+	border-width: 1px;
+}
+
+input.form-control{
+	
+	height:  32px;
+	width: 280px;
+}
+
+select.form-control{
+	
+	height:  32px;
+	width: 280px;
+}
+
+
+.well {
+	border-radius: 0px;
+	border-width: 0.5px;
+	border-color: #808F9C;
+	
+}
+
+
+.aCustomC {
+	
+    padding: 8px 10px;
+    font: 20px/22px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(9,47,135, 0.9);
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    border-radius:1px;
+	
+}
+
+.aCustomD {
+	
+    padding: 5px 7px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 0px;
+	
+}
+
+#mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9000;
+  background-color: rgba(0,0,0,0.9);
+  display: none;
+}
+
+#boxes .window {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 450px;
+  height: 400px;
+  display: none;
+  z-index: 9999;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+#boxes #dialog {
+  width: 650px;
+  height: 550px;
+  padding: 10px;
+  background-color: #ffffff;
+  font-family: 'Segoe UI Light', sans-serif;
+  font-size: 15pt;
+}
+
+#popupfoot {
+  font-size: 16pt;
+  position: absolute;
+  bottom: 10px;
+  color: black;
+  width: 300px;
+  left: 40px;
+}
