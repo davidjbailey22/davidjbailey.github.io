@@ -5,104 +5,12 @@
 var map;
 var centerlatlng = L.latLng(37.295206, -105.773767);
 
-var southWest = L.latLng(-8.327415, -166.772566),
-    northEast = L.latLng(78.919433, 3.559463),
+var southWest = L.latLng(37.279675, -105.790567),
+    northEast = L.latLng(37.312270, -105.751586),
     bounds = L.latLngBounds(southWest, northEast);
 
 // Create an object to store current image indexes for each point
 var currentImageIndexes = {};
-
-var list_of_img = {
-  "23": [
-    "pics/num23_1.JPG",
-    "pics/num23_2.JPG",
-    "pics/num23_3.JPG"
-  ],
-  "9": [
-    "pics/num9_1.JPG",
-    "pics/num9_3.JPG",
-    "pics/num9_2.JPG"
-  ],
-  "21": [
-    "pics/num21_2.JPG",
-    "pics/num21_1.JPG"
-  ],
-  "18": [
-    "pics/num18_1.JPG",
-    "pics/num18_2.JPG"
-  ],
-  "8": [
-    "pics/num8_3.JPG",
-    "pics/num8_2.JPG",
-    "pics/num8_1.JPG"
-  ],
-  "20": [
-    "pics/num20_1.JPG"
-  ],
-  "22": [
-    "pics/num22_3.JPG",
-    "pics/num22_1.JPG"
-  ],
-  "19": [
-    "pics/num19_1.JPG"
-  ],
-  "2": [
-    "pics/num2_1.JPG"
-  ],
-  "15": [
-    "pics/num15_1.JPG"
-  ],
-  "17": [
-    "pics/num17_1.JPG"
-  ],
-  "4": [
-    "pics/num4_4.JPG",
-    "pics/num4_1.JPG",
-    "pics/num4_2.JPG",
-    "pics/num4_3.JPG"
-  ],
-  "0": [
-    "pics/num0_1.JPG"
-  ],
-  "11": [
-    "pics/num11_2.JPG",
-    "pics/num11_3.JPG",
-    "pics/num11_1.JPG"
-  ],
-  "13": [
-    "pics/num13_1.JPG"
-  ],
-  "6": [
-    "pics/num6_1.JPG"
-  ],
-  "3": [
-    "pics/num3_2.JPG",
-    "pics/num3_3.JPG",
-    "pics/num3_1.JPG",
-    "pics/num3_4.JPG"
-  ],
-  "1": [
-    "pics/num1_1.JPG"
-  ],
-  "14": [
-    "pics/num14_1.JPG"
-  ],
-  "10": [
-    "pics/num10_1.JPG",
-    "pics/num10_2.JPG"
-  ],
-  "7": [
-    "pics/num7_1.JPG",
-    "pics/num7_2.JPG"
-  ],
-  "12": [
-    "pics/num12_2.JPG",
-    "pics/num12_1.JPG"
-  ],
-  "5": [
-    "pics/num5_1.JPG"
-  ]
-};
 
 // Function to initialize the current image index for a point
 function initializeCurrentImageIndex(point) {
@@ -121,21 +29,32 @@ function nextImage(point) {
 
     // Get the current image index for the point
     var currentIndex = currentImageIndexes[point];
+    console.log("D")
+    console.log(currentIndex)
 
-    // Check if there are images for this point
-    if (list_of_img[point] && list_of_img[point].length > 0) {
-        // Increment the current index or reset to 0 if it exceeds the maximum
-        currentIndex = (currentIndex + 1) % list_of_img[point].length;
-        // Update the current image index for the point
-        currentImageIndexes[point] = currentIndex;
-        // Update the popup image
-        updatePopupImage(currentIndex, point);
+    // Check if the current index exceeds the maximum (4 in your case)
+    if (currentIndex >= 4) {
+        console.log("S")
+        console.log(currentIndex)
+        // Reset the index to 1 if it exceeds the maximum
+        currentIndex = 1;
+    } else {
+        console.log(currentIndex)
+        // Increment the current index
+        currentIndex++;
     }
+
+    // Update the current image index for the point
+    currentImageIndexes[point] = currentIndex;
+
+    console.log('Next Image - Point:', point, 'Image Index:', currentIndex);
+    updatePopupImage(currentIndex, point);
 }
+
 function updatePopupImage(index, point) {
     var popupImage = document.querySelector('.popup-image');
-    if (popupImage && list_of_img[point] && list_of_img[point][index]) {
-        popupImage.src = list_of_img[point][index];
+    if (popupImage) {
+        popupImage.src = getImageFilename(point, index);
     }
 }
 
@@ -156,8 +75,26 @@ $(document).ready(function() {
         }
     });
 
-    // Create a Leaflet map
-    var map = L.map('myMap').setView([37.296222, -105.773746], 17);
+    // Create a Leaflet map with maxBounds option
+    var map = L.map('myMap', {
+        center: [37.296222, -105.773746],
+        zoom: 17,
+        maxZoom: 20,       // Sets the maximum allowed zoom level
+        minZoom: 10,        // Sets the minimum allowed zoom level
+        maxBounds: bounds // Set the property boundary as max bounds
+});
+
+    // Listen for the zoomend event
+    map.on('zoomend', function () {
+        var currentZoom = map.getZoom();
+
+        // Check if the current zoom level is beyond your desired range
+        if (currentZoom < 10) {
+            map.setZoom(10); // Set the zoom level back to the minimum
+        } else if (currentZoom > 20) {
+            map.setZoom(20); // Set the zoom level back to the maximum
+        }
+    });
 
     var riverpointData =
         {
@@ -221,55 +158,26 @@ $(document).ready(function() {
         ]
         }
 
-
     //  boundaryData
     var boundaryData = {
-      "type": "FeatureCollection",
-      "name": "property_boundary",
-      "crs": {
-        "type": "name",
-        "properties": {
-          "name": "EPSG:4326"
+        "type": "FeatureCollection",
+        "name": "project_bounds",
+        "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+        "features": [
+        { "type": "Feature", "properties": { "id": 1, "name": "big d fake ranch", "elevation": 1900.0, "acres": 140.0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -105.765229646779943, 37.291142220610872, 0.0 ], [ -105.778773575037249, 37.29114091623682, 0.0 ], [ -105.778841061864128, 37.298589286355245, 0.0 ], [ -105.765283871820756, 37.298258960042148, 0.0 ], [ -105.765229646779943, 37.291142220610872, 0.0 ] ] ] ] } }
+        ]
         }
-      },
-      "bbox": [-105.17899098043754, 39.95678950816371, -105.16260090096505, 40.04585340662501],
-      "features": [
-        {
-          "type": "Feature",
-          "properties": {
-            "id": 1,
-            "name": "big d fake ranch",
-            "elevation": 1900.0,
-            "acres": 140.0
-          },
-          "geometry": {
-            "type": "MultiPolygon",
-            "coordinates": [
-              [
-                [
-                  [-105.16268582130038, 39.95678950816371],
-                  [-105.17899098043754, 39.95689736448627],
-                  [-105.17897569726867, 40.04585340662501],
-                  [-105.16260090096505, 40.04572280384013],
-                  [-105.16268582130038, 39.95678950816371]
-                ]
-              ]
-            ]
-          }
-        }
-      ]
-    };
 
-    // add polygon to the map
-    var polyLayer = L.geoJSON(boundaryData, {
-      style: function (feature) {
-        return {
-          fillColor: 'transparent', // Set fill color to transparent
-          color: 'red',             // Set outline color to red
-          weight: 4                 // Set outline weight
-        };
+    var boundaryLayer = L.geoJSON(boundaryData, {
+      style: {
+        color: 'red',  // Set the outline color to red
+        weight: 5,           // Line thickness
+        opacity: 0.5,
+        fill: false     // Make sure the polygons are not filled
       }
     }).addTo(map);
+
+    //map.fitBounds(boundaryLayer.getBounds());
 
     // Add a Mapbox basemap layer (e.g., Mapbox Satellite)
     var accessToken = 'pk.eyJ1IjoiZGF2aWRqb25hdGhhbmJhaWxleSIsImEiOiJjbG45ZzUwbXMwNm1xMmxyam81czI5Yml6In0.3-wCHTMgSpT36OdwAQbHAA';
@@ -320,7 +228,7 @@ $(document).ready(function() {
     var banklineLayer = L.geoJSON(banklineData, {
         style: {
             color: "#0077be",      // Line color
-            weight: 12,           // Line thickness
+            weight: 12,       // Line thickness
             opacity: 0.5         // Line opacity (0 to 1)
         }
     }).addTo(map);
@@ -381,7 +289,6 @@ $(document).ready(function() {
 
             return popupContent;
         }
-
 
 }); // end document ready
 
