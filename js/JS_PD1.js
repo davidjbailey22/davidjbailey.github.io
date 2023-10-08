@@ -167,7 +167,7 @@ $(document).ready(function() {
         { "type": "Feature", "properties": { "id": 1, "name": "big d fake ranch", "elevation": 1900.0, "acres": 140.0 }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -105.765229646779943, 37.291142220610872, 0.0 ], [ -105.778773575037249, 37.29114091623682, 0.0 ], [ -105.778841061864128, 37.298589286355245, 0.0 ], [ -105.765283871820756, 37.298258960042148, 0.0 ], [ -105.765229646779943, 37.291142220610872, 0.0 ] ] ] ] } }
         ]
         }
-
+    // property bounds
     var boundaryLayer = L.geoJSON(boundaryData, {
       style: {
         color: 'red',  // Set the outline color to red
@@ -176,8 +176,6 @@ $(document).ready(function() {
         fill: false     // Make sure the polygons are not filled
       }
     }).addTo(map);
-
-    //map.fitBounds(boundaryLayer.getBounds());
 
     // Add a Mapbox basemap layer (e.g., Mapbox Satellite)
     var accessToken = 'pk.eyJ1IjoiZGF2aWRqb25hdGhhbmJhaWxleSIsImEiOiJjbG45ZzUwbXMwNm1xMmxyam81czI5Yml6In0.3-wCHTMgSpT36OdwAQbHAA';
