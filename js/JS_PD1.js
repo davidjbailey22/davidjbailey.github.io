@@ -124,8 +124,6 @@ function nextImage(point) {
 
     // Check if there are images for this point
     if (list_of_img[point] && list_of_img[point].length > 0) {
-        console.log(list_of_img[point].length)
-        console.log(currentIndex)
         // Increment the current index or reset to 0 if it exceeds the maximum
         currentIndex = (currentIndex + 1) % list_of_img[point].length;
         // Update the current image index for the point
